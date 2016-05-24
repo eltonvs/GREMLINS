@@ -12,6 +12,9 @@
  */
 
 #include <iostream>
+#include "SLPool.hpp"
+#include "StoragePool.hpp"
+#include "mempool_common.hpp"
 
 int main(int argc, char const *argv[]) {
     std::cout << ">>> Exiting with success...\n";
