@@ -10,7 +10,7 @@
 #ifndef _mempool_common_hpp_
 #define _mempool_common_hpp_
 
-#include <cstddef>
+#include <cstddef>  // To std::size_t
 #include "StoragePool.hpp"
 
 struct Tag {
