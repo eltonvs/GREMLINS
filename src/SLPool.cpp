@@ -6,5 +6,5 @@
  *  File with the SLPool Class implementations
  */
 
-#include <cstddef>
+#include <cstddef>  // To std::size_t
 #include "SLPool.hpp"

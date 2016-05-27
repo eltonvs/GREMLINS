@@ -6,5 +6,5 @@
  *  File with the StoragePool Class implementations
  */
 
-#include <cstddef>
+#include <cstddef>  // To std::size_t
 #include "StoragePool.hpp"
