@@ -38,6 +38,11 @@ class SLPool : public StoragePool {
     void Free(void *_p);
 
     /**
+     * @brief Debugging Function
+     */
+    void debug();
+
+    /**
      * @brief The header of the memory block
      */
     struct Header {

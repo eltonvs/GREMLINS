@@ -17,6 +17,10 @@
 #include "mempool_common.hpp"
 
 int main(int argc, char const *argv[]) {
+    SLPool test(220);
+
+    test.debug();
+
     std::cout << ">>> Exiting with success...\n";
 
     return EXIT_SUCCESS;
