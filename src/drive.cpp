@@ -21,6 +21,46 @@ int main(int argc, char const *argv[]) {
 
     test.debug();
 
+    try {
+        test.Allocate(44);
+    } catch (std::bad_alloc &e) {
+        std::cerr << "Error" << std::endl;
+    }
+
+    test.debug();
+
+    try {
+        test.Allocate(44);
+    } catch (std::bad_alloc &e) {
+        std::cerr << "Error" << std::endl;
+    }
+
+    test.debug();
+
+    try {
+        test.Allocate(44);
+    } catch (std::bad_alloc &e) {
+        std::cerr << "Error" << std::endl;
+    }
+
+    test.debug();
+
+    try {
+        test.Allocate(44);
+    } catch (std::bad_alloc &e) {
+        std::cerr << "Error" << std::endl;
+    }
+
+    test.debug();
+
+    try {
+        test.Allocate(44);
+    } catch (std::bad_alloc &e) {
+        std::cerr << "Error" << std::endl;
+    }
+
+    test.debug();
+
     std::cout << ">>> Exiting with success...\n";
 
     return EXIT_SUCCESS;

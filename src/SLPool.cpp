@@ -9,6 +9,7 @@
 #include <iostream>
 #include <cstddef>  // To std::size_t
 #include <cmath>    // To std::ceil
+#include <new>      // To std::bad_alloc
 #include "SLPool.hpp"
 
 // Constructor
@@ -31,7 +32,26 @@ SLPool::~SLPool() {
 
 // Allocate function
 void *SLPool::Allocate(std::size_t _b) {
-    return 0;
+    unsigned n_blocks = std::ceil(static_cast<float>(_b)/Block::BlockSize);
+    Block *pos        = mr_Sentinel.mp_Next;
+    Block *prev_pos   = &mr_Sentinel;
+
+    while (pos != nullptr) {
+        if (pos->mui_Length >= n_blocks) {
+            if (pos->mui_Length == n_blocks) {
+                prev_pos->mp_Next = pos->mp_Next;
+            } else {
+                prev_pos->mp_Next = pos + n_blocks;
+                prev_pos->mp_Next->mp_Next = pos->mp_Next;
+                prev_pos->mp_Next->mui_Length = pos->mui_Length - n_blocks;
+                pos->mui_Length = n_blocks;
+            }
+            return reinterpret_cast<void *>(reinterpret_cast<int *>(pos)+1U);
+        }
+        prev_pos = pos, pos = pos->mp_Next;
+    }
+
+    throw(std::bad_alloc());
 }
 
 // Free memory
