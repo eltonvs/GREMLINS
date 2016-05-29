@@ -16,7 +16,7 @@ class StoragePool {
     /**
      * @brief StoragePool destructor
      */
-    virtual ~StoragePool() {};
+    virtual ~StoragePool() {}
 
     /**
      * @brief Allocate memory

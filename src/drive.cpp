@@ -12,9 +12,8 @@
  */
 
 #include <iostream>
-#include "SLPool.hpp"
-#include "StoragePool.hpp"
 #include "mempool_common.hpp"
+#include "SLPool.hpp"
 
 int main(int argc, char const *argv[]) {
     SLPool test(220);
