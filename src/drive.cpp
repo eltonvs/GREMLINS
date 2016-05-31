@@ -18,47 +18,17 @@
 int main(int argc, char const *argv[]) {
     SLPool test(220);
 
+    std::cout << "Empty Pool:" << std::endl;
     test.debug();
 
-    try {
-        test.Allocate(44);
-    } catch (std::bad_alloc &e) {
-        std::cerr << "Error" << std::endl;
+    for (int i = 0; i < 5; i++) {
+        try {
+            std::cout << "Returned value: " << test.Allocate(44) << std::endl;
+        } catch (std::bad_alloc &e) {
+            std::cerr << "Error" << std::endl;
+        }
+        test.debug();
     }
-
-    test.debug();
-
-    try {
-        test.Allocate(44);
-    } catch (std::bad_alloc &e) {
-        std::cerr << "Error" << std::endl;
-    }
-
-    test.debug();
-
-    try {
-        test.Allocate(44);
-    } catch (std::bad_alloc &e) {
-        std::cerr << "Error" << std::endl;
-    }
-
-    test.debug();
-
-    try {
-        test.Allocate(44);
-    } catch (std::bad_alloc &e) {
-        std::cerr << "Error" << std::endl;
-    }
-
-    test.debug();
-
-    try {
-        test.Allocate(44);
-    } catch (std::bad_alloc &e) {
-        std::cerr << "Error" << std::endl;
-    }
-
-    test.debug();
 
     std::cout << ">>> Exiting with success...\n";
 

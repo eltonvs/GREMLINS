@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <cstddef>  // To std::size_t
+#include <string>   // To std::string
 #include <cmath>    // To std::ceil
 #include <new>      // To std::bad_alloc
 #include "SLPool.hpp"
@@ -41,12 +42,12 @@ void *SLPool::Allocate(std::size_t _b) {
             if (pos->mui_Length == n_blocks) {
                 prev_pos->mp_Next = pos->mp_Next;
             } else {
-                prev_pos->mp_Next = pos + n_blocks;
-                prev_pos->mp_Next->mp_Next = pos->mp_Next;
+                prev_pos->mp_Next             = pos + n_blocks;
+                prev_pos->mp_Next->mp_Next    = pos->mp_Next;
                 prev_pos->mp_Next->mui_Length = pos->mui_Length - n_blocks;
-                pos->mui_Length = n_blocks;
+                pos->mui_Length               = n_blocks;
             }
-            return reinterpret_cast<void *>(pos+1U);
+            return reinterpret_cast<void *>(reinterpret_cast<int *>(pos)+1U);
         }
         prev_pos = pos, pos = pos->mp_Next;
     }
@@ -59,22 +60,16 @@ void SLPool::Free(void *_p) {}
 
 // Debugging (just for tests)
 void SLPool::debug() {
-    std::cout << "Number of Blocks: " << mui_NumberOfBlocks << "\n\n";
-
-    std::cout << "mr_Sentinel content:\n  ";
-    std::cout << "memPos: " << &mr_Sentinel << ", ";
-    std::cout << "mui_Lenght: " << mr_Sentinel.mui_Length << ", ";
-    std::cout << "mp_Next: " << mr_Sentinel.mp_Next << "\n\n";
-
-    std::cout << "mp_Pool content:\n";
-    for (auto i(0u); i < mui_NumberOfBlocks; i++) {
-        std::cout << "  [" << i << "], memPos: " << (mp_Pool+i) << ", ";
-        std::cout << "mui_Lenght: " << mp_Pool[i].mui_Length << ", ";
-        if (mp_Pool[i].mp_Next) {
-            std::cout << "mp_Next: " << mp_Pool[i].mp_Next << "\n";
-        } else {
-            std::cout << "mc_RawArea: " << mp_Pool[i].mc_RawArea << "\n";
-        }
+    auto *temp = mr_Sentinel.mp_Next;
+    auto i     = 0u;
+    while (i < mui_NumberOfBlocks - 1) {
+        auto j = (mp_Pool + i)->mui_Length;
+        i += j;
+        if (mp_Pool + i - j == temp)
+            while (j-- > 0)
+                std::cout << "[] ";
+        else
+            std::cout << "[" << std::string(j, '#') << "] ";
     }
     std::cout << "\n";
 }
