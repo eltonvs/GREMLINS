@@ -38,9 +38,9 @@ class SLPool : public StoragePool {
     void Free(void *_p);
 
     /**
-     * @brief Debugging Function
+     * @brief Function to show a visual representation from memory Blocks
      */
-    void debug();
+    void view();
 
     /**
      * @brief The header of the memory block

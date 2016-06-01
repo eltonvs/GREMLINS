@@ -47,7 +47,7 @@ void *SLPool::Allocate(std::size_t _b) {
                 prev_pos->mp_Next->mui_Length = pos->mui_Length - n_blocks;
                 pos->mui_Length               = n_blocks;
             }
-            return reinterpret_cast<void *>(reinterpret_cast<int *>(pos)+1U);
+            return reinterpret_cast<void *>(reinterpret_cast<Header *>(pos)+1U);
         }
         prev_pos = pos, pos = pos->mp_Next;
     }
@@ -56,20 +56,54 @@ void *SLPool::Allocate(std::size_t _b) {
 }
 
 // Free memory
-void SLPool::Free(void *_p) {}
+void SLPool::Free(void *_p) {
+    auto *ini   = reinterpret_cast<Block *>(reinterpret_cast<Header *>(_p)-1U);
+    auto *pos   = mr_Sentinel.mp_Next;
+    auto *p_pos = &mr_Sentinel;
 
-// Debugging (just for tests)
-void SLPool::debug() {
-    auto *temp = mr_Sentinel.mp_Next;
-    auto i     = 0u;
-    while (i < mui_NumberOfBlocks - 1) {
-        auto j = (mp_Pool + i)->mui_Length;
-        i += j;
-        if (mp_Pool + i - j == temp)
-            while (j-- > 0)
-                std::cout << "[] ";
-        else
+    while (pos != nullptr) {
+        if (pos <= ini) {
+            p_pos = pos, pos = pos->mp_Next;
+            continue;
+        }
+        if (p_pos + p_pos->mui_Length == ini && ini + ini->mui_Length == pos) {
+            p_pos->mui_Length += ini->mui_Length + pos->mui_Length;
+            ini->mui_Length    = 0;
+            pos->mui_Length    = 0;
+            p_pos->mp_Next     = pos->mp_Next;
+        } else if (p_pos + p_pos->mui_Length == ini) {
+            p_pos->mui_Length += ini->mui_Length;
+            ini->mui_Length    = 0;
+        } else if (ini + ini->mui_Length == pos) {
+            ini->mui_Length += pos->mui_Length;
+            pos->mui_Length  = 0;
+            ini->mp_Next     = pos->mp_Next;
+            std::cout << "Merging right" << std::endl;
+        } else {
+            p_pos->mp_Next = ini;
+            ini->mp_Next   = pos;
+        }
+        return;
+    }
+    if (pos == nullptr) {
+        ini->mp_Next   = nullptr;
+        p_pos->mp_Next = ini;
+    }
+}
+
+// Method to show a visual representation from memory blocks
+void SLPool::view() {
+    auto *pt = mr_Sentinel.mp_Next;
+    auto pos = 0u;
+    while (pos < mui_NumberOfBlocks - 1) {
+        auto j = (mp_Pool + pos)->mui_Length;
+        pos   += j;
+        if (mp_Pool + pos - j == pt) {
+            while (j-- > 0) std::cout << "[] ";
+            pt = pt->mp_Next;
+        } else {
             std::cout << "[" << std::string(j, '#') << "] ";
+        }
     }
     std::cout << "\n";
 }
