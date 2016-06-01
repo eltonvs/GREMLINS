@@ -78,7 +78,6 @@ void SLPool::Free(void *_p) {
             ini->mui_Length += pos->mui_Length;
             pos->mui_Length  = 0;
             ini->mp_Next     = pos->mp_Next;
-            std::cout << "Merging right" << std::endl;
         } else {
             p_pos->mp_Next = ini;
             ini->mp_Next   = pos;
