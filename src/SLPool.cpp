@@ -55,6 +55,38 @@ void *SLPool::Allocate(std::size_t _b) {
     throw(std::bad_alloc());
 }
 
+// Allocate function using Best Fit
+void *SLPool::AllocateBF(std::size_t _b) {
+    unsigned n_blocks = std::ceil(static_cast<float>(_b)/Block::BlockSize);
+    Block *pos        = mr_Sentinel.mp_Next;
+    Block *prev_pos   = &mr_Sentinel;
+    Block *prev_best  = nullptr;
+    Block *best       = nullptr;
+
+    while (pos != nullptr) {
+        if (pos->mui_Length >= n_blocks) {
+            // The current Block have the same size that the client needs
+            if (pos->mui_Length == n_blocks) {
+                prev_pos->mp_Next = pos->mp_Next;
+                return reinterpret_cast<void *>(reinterpret_cast<Header *>(pos)+1U);
+            } else if (best == nullptr || best->mui_Length > pos->mui_Length) {
+                best = pos, prev_best = prev_pos;
+            }
+        }
+        prev_pos = pos, pos = pos->mp_Next;
+    }
+
+    if (best != nullptr) {
+        prev_best->mp_Next             = best + n_blocks;
+        prev_best->mp_Next->mp_Next    = best->mp_Next;
+        prev_best->mp_Next->mui_Length = best->mui_Length - n_blocks;
+        best->mui_Length               = n_blocks;
+        return reinterpret_cast<void *>(reinterpret_cast<Header *>(best)+1U);
+    }
+
+    throw(std::bad_alloc());
+}
+
 // Free memory
 void SLPool::Free(void *_p) {
     auto *ini   = reinterpret_cast<Block *>(reinterpret_cast<Header *>(_p)-1U);

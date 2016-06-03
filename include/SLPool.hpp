@@ -32,6 +32,13 @@ class SLPool : public StoragePool {
     void *Allocate(std::size_t _b);
 
     /**
+     * @brief Allocate memory using the Best Fit algorithm
+     * @param _b Number of bytes to be allocated
+     * @return A pointer to the beggining of the allocated area
+     */
+    void *AllocateBF(std::size_t _b);
+
+    /**
      * @brief Free Memory
      * @param _p A pointer to element to be freed
      */
