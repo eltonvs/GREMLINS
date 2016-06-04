@@ -1,5 +1,5 @@
 /*!
- *  @file SLPool.cpp
+ *  @file SLPool.hpp
  *  @brief SLPool Class Prototype
  *  @copyright Copyright &copy; 2016. All rights reserved.
  *
