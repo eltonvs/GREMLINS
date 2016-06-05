@@ -30,6 +30,11 @@ class StoragePool {
      * @param _p A pointer to element to be freed
      */
     virtual void Free(void *_p) = 0;
+
+    /**
+     * @brief Function to show a visual representation from memory Blocks
+     */
+    virtual void view() = 0;
 };
 
 #endif
