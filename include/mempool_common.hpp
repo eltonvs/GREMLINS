@@ -1,5 +1,5 @@
 /**
- *  @file mempool_common.cpp
+ *  @file mempool_common.hpp
  *  @brief Common implementation of new and delete operators
  *  @copyright Copyright &copy; 2016. All rights reserved.
  *  @authors Selan Rodrigues dos Santos, Elton de Souza Vieira
