@@ -22,12 +22,13 @@ RM = /bin/rm
 WARN = -Wall
 # DEBUG FLAGS
 DEBUG = -g
+COMPRESS = -O3
 # LINKING FLAGS
 INCFLAG = -I $(INCDIR)
 LFLAGS = $(DEBUG) $(WARN) $(INCFLAG)
 TEST_TYPE = 1
 # COMPILATION FLAGS
-CFLAGS = $(DEBUG) -c $(WARN) -D_TEST_TYPE_=$(TEST_TYPE) -std=c++11
+CFLAGS = $(DEBUG) $(COMPRESS) -c $(WARN) -D_TEST_TYPE_=$(TEST_TYPE) -std=c++11
 
 # ----------------------
 # ENTRIES
