@@ -16,6 +16,7 @@
 #include <cassert>   // assert
 #include <queue>     // std::priority_queue
 #include <chrono>    // std::chrono
+#include <random>    // std::random_device
 #include <cmath>     // std::ceil
 #include <string>    // std::string
 
@@ -30,6 +31,7 @@
  */
 void StoragePoolTest(StoragePool *_pool, std::time_t _timeLimit) {
     // [1] Setup random numbers generator for memory size, say [100,2000] bytes.
+    std::random_device rdm;
     auto ms_max = 2000u, ms_min = 100u;
     // [2] Setup random numbers generator for time intervals, say [1,100] units.
     auto ti_max = 100u, ti_min = 1u;
@@ -52,10 +54,9 @@ void StoragePoolTest(StoragePool *_pool, std::time_t _timeLimit) {
             // Calling free operator.
             _pool->Free(ev.getMemoryPtr());
         }
-        unsigned seed = static_cast<unsigned>(time(NULL));
-        auto memSize = rand_r(&seed)%(ms_max - ms_min) + ms_min;
+        auto memSize = rdm()%(ms_max - ms_min) + ms_min;
         void *const add = _pool->Allocate(memSize);
-        auto elapsedTime = rand_r(&seed)%(ti_max - ti_min) + ti_min;
+        auto elapsedTime = rdm()%(ti_max - ti_min) + ti_min;
         // Set time stamp some time from now.
         std::time_t releaseTime = t + elapsedTime;
         // Creating a new simulation event.
