@@ -23,6 +23,11 @@
 #include "SLPool.hpp"
 #include "Event.hpp"
 
+/**
+ * @brief Function to test the Pool allocation in a time limit
+ * @param _pool A pointer to the pool to be used
+ * @param _timeLimit The time limit
+ */
 void StoragePoolTest(StoragePool *_pool, std::time_t _timeLimit) {
     // [1] Setup random numbers generator for memory size, say [100,2000] bytes.
     auto ms_max = 2000u, ms_min = 100u;
@@ -60,6 +65,10 @@ void StoragePoolTest(StoragePool *_pool, std::time_t _timeLimit) {
     }
 }
 
+/**
+ * @brief The unit and visual tests to ensure the Pool is working as well
+ * @param _pool The Pool to be tested
+ */
 void StoragePoolValidation(StoragePool &_pool) {
     int *allocs[7];
 

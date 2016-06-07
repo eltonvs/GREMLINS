@@ -14,35 +14,35 @@
 #include "StoragePool.hpp"
 
 struct Tag {
-    StoragePool *pool;
+    StoragePool *pool;  //!< A reference to the Pool
 };
 
 void *operator new(std::size_t bytes, StoragePool &p) {
     Tag * const tag = reinterpret_cast<Tag *>(p.Allocate(bytes + sizeof(Tag)));
     tag->pool = &p;
     // skip sizeof tag to get the raw data - block.
-    return (reinterpret_cast<void *>(tag + 1U));
+    return reinterpret_cast<void *>(tag + 1U);
 }
 
 void *operator new[](std::size_t bytes, StoragePool &p) {
     Tag * const tag = reinterpret_cast<Tag *>(p.Allocate(bytes + sizeof(Tag)));
     tag->pool = &p;
     // skip sizeof tag to get the raw data - block.
-    return (reinterpret_cast<void *>(tag + 1U));
+    return reinterpret_cast<void *>(tag + 1U);
 }
 
 void *operator new(std::size_t bytes) {  // Regular new
     Tag *const tag = reinterpret_cast<Tag *>(std::malloc(bytes + sizeof(Tag)));
     tag->pool = nullptr;
     // skip sizeof tag to get the raw data - block.
-    return (reinterpret_cast<void *>(tag + 1U));
+    return reinterpret_cast<void *>(tag + 1U);
 }
 
 void *operator new[](std::size_t bytes) {  // Regular new
     Tag *const tag = reinterpret_cast<Tag *>(std::malloc(bytes + sizeof(Tag)));
     tag->pool = nullptr;
     // skip sizeof tag to get the raw data - block.
-    return (reinterpret_cast<void *>(tag + 1U));
+    return reinterpret_cast<void *>(tag + 1U);
 }
 
 void operator delete(void *arg) noexcept {
