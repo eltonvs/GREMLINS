@@ -2,7 +2,7 @@
 GREMLINS - GeREnciador de Memória com LIsta eNcadeada Simples
 
 ## Sobre o Projeto
-GREMLINS é um acrônimo para **G**e**RE**nciador de **M**emória com **LI**sta eNcadeada **S**imples.
+GREMLINS é um acrônimo para **G**e**RE**nciador de **M**emória com **LI**sta e**N**cadeada **S**imples.
 Ele, basicamente, requisita ao Sistema Operacional um bloco grande de memória e o gerencia, entregando blocos menores para a aplicação quando é solicitado.
 
 ## Como ele funciona?
